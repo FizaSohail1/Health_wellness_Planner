@@ -1,6 +1,8 @@
 from typing import Optional, List, Dict
 from pydantic import BaseModel
+from dataclasses import dataclass
 
+@dataclass
 class UserSessionContext(BaseModel):
     goal: Optional[dict] = None
     diet_preferences: Optional[str] = None

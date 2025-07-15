@@ -3,27 +3,42 @@ from agents import function_tool
 from pydantic import BaseModel, Field
 from typing_extensions import TypedDict
 
-
 class MealPlanInput(BaseModel):
     dietary_preference: str = Field(..., description="User's dietary preference, e.g., vegetarian, keto, high-protein")
 
 class MealPlannerOut(TypedDict):
-    weekly_meal_plan: List[List[str]]  
+    weekly_meal_plan: List[List[str]]
 
-# 🛠️ Tool
+
 @function_tool
 async def meal_planner(input: MealPlanInput) -> MealPlannerOut:
-    """
-    Suggest a simple 7-day meal plan based on the user's dietary preference.
-    """
 
-    print("🍽️ meal_planner tool called") 
+    meal_options = {
+        "vegetarian": [
+            ["Oatmeal with fruits", "Veggie stir fry with tofu", "Lentil curry with rice"],
+            ["Greek yogurt with granola", "Chickpea salad", "Stuffed bell peppers"],
+            ["Smoothie bowl", "Grilled cheese & tomato soup", "Paneer tikka with roti"],
+            ["Avocado toast", "Vegetable pasta", "Spinach & mushroom curry"],
+            ["Poha", "Veggie wrap", "Rajma chawal"],
+            ["Banana pancakes", "Mixed bean salad", "Vegetable biryani"],
+            ["Paratha with curd", "Minestrone soup", "Chole bhature"],
+        ],
+        "keto": [
+            ["Scrambled eggs", "Grilled chicken salad", "Zucchini noodles with pesto"],
+            ["Chia seed pudding", "Avocado chicken bowl", "Cauliflower crust pizza"],
+            ["Cheese omelette", "Tuna salad", "Beef stir fry"],
+            ["Bulletproof coffee", "Egg salad lettuce wraps", "Salmon and asparagus"],
+            ["Almond pancakes", "Broccoli cheddar soup", "Grilled shrimp with veggies"],
+            ["Boiled eggs", "Zoodles with meatballs", "Keto butter chicken"],
+            ["Yogurt with flaxseeds", "Cobb salad", "Steak and roasted cauliflower"],
+        ],
+    }
 
-    sample_meal = f"{input.dietary_preference.title()} Meal"
+    preference = input.dietary_preference.lower()
+    weekly_meal_plan = meal_options.get(preference)
 
-    weekly_meal_plan = [
-        [f"{sample_meal} - Breakfast", f"{sample_meal} - Lunch", f"{sample_meal} - Dinner"]
-        for _ in range(7)
-    ]
+    if not weekly_meal_plan:
+ 
+        weekly_meal_plan = meal_options["vegetarian"]
 
     return {"weekly_meal_plan": weekly_meal_plan}

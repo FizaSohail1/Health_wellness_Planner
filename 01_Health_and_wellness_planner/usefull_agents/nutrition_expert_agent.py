@@ -1,7 +1,5 @@
 from agents import Agent, set_tracing_disabled
 from dotenv import load_dotenv
-from openai.types.responses import ResponseTextDeltaEvent
-from my_context.context import UserSessionContext
 from tools.meal_planner import meal_planner
 
 load_dotenv()

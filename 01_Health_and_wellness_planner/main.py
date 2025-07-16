@@ -12,9 +12,9 @@ from usefull_agents.nutrition_expert_agent import nutrition_agent
 from usefull_agents.escalation_agnt import escalation_agent
 from my_context.context import UserSessionContext
 
-
 st.set_page_config(page_title="Wellness Chat", layout="centered")
 st.title("🏥 Health & Wellness Planner Assistant")
+
 
 set_tracing_disabled(disabled=True)
 
@@ -29,7 +29,7 @@ main_agent = Agent[UserSessionContext](
     - Use `progress_tracker` to log progress.
     If the user's query is unrelated or needs human support, use the given agents to give the proper response.
     """,
-    model="gpt-3.5-turbo-1106",
+    model="gpt-4.1-mini",
     tools=[
         goal_analyzer,
         meal_planner,
@@ -48,13 +48,14 @@ main_agent = Agent[UserSessionContext](
 if "chat_history" not in st.session_state:
     st.session_state.chat_history = []
 
-st.markdown("---")
-st.subheader("💬 Chat With Your Wellness Assistant")
+if "agent_context" not in st.session_state:
+    st.session_state.agent_context = UserSessionContext()
+
 
 chat_input = st.chat_input("Say something to your assistant...")
 
 async def run_agent_chat(message: str):
-    context = UserSessionContext()
+    context = st.session_state.agent_context
     st.session_state.chat_history.append(("user", message))
     
     with st.chat_message("user"):
@@ -71,17 +72,11 @@ async def run_agent_chat(message: str):
                     streamed_response += delta
                     output_box.markdown(streamed_response)
             st.session_state.chat_history.append(("assistant", streamed_response))
+
         except Exception as e:
             error = f"❌ Error: {str(e)}"
             output_box.error(error)
             st.session_state.chat_history.append(("assistant", error))
-
-
-if chat_input:
-    asyncio.run(run_agent_chat(chat_input))
-
-for role, msg in st.session_state.chat_history:
-    st.chat_message(role).write(msg)
 
 st.markdown("---")
 st.subheader("⚡ Quick Prompts")
@@ -96,6 +91,21 @@ quick_prompts = [
 for prompt in quick_prompts:
     if st.button(prompt):
         asyncio.run(run_agent_chat(prompt))
+
+st.markdown("---")
+st.subheader("💬 Chat With Your Wellness Assistant")   
+
+if st.button("🎯 Show Structured Goal"):
+    context = st.session_state.agent_context
+    if hasattr(context, "goal") and context.goal:
+        with st.expander("Structured Goal"):
+            st.json(context.goal)
+    else:
+        st.info("No structured goal found yet. Try describing your goal first.")
+
+
+if chat_input:
+    asyncio.run(run_agent_chat(chat_input))
 
 st.markdown("---")
 st.markdown("📖 *Built with ❤️ to help you learn and grow.*")

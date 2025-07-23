@@ -1,9 +1,7 @@
-from agents import Agent, set_tracing_disabled
+from agents import Agent 
 from dotenv import load_dotenv
 
 load_dotenv()
-set_tracing_disabled(disabled=True)
-
 
 escalation_agent = Agent(
     name="escalation-agent",

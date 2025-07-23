@@ -14,6 +14,11 @@ class WorkoutPlanOut(TypedDict):
 
 @function_tool
 async def workout_recommender(input: WorkoutInput) -> WorkoutPlanOut:
+    """
+    This tool analyzes the user's goal—either weight loss or muscle gain—and their experience 
+    level—beginner or intermediate—to generate a structured 7-day workout plan line by line. 
+    It returns a day-by-day list of suggested exercises tailored to the user's needs.
+    """
     print("🛠️ workout tool was called")
 
     goal = input.goal_type.lower()

@@ -13,6 +13,7 @@ source = { virtual = "." }
 dependencies = [
     { name = "openai-agents", extra = ["litellm"] },
     { name = "pydantic" },
+    { name = "strands" },
     { name = "streamlit" },
 ]
 
@@ -20,6 +21,7 @@ dependencies = [
 requires-dist = [
     { name = "openai-agents", extras = ["litellm"], specifier = ">=0.1.0" },
     { name = "pydantic", specifier = ">=2.11.7" },
+    { name = "strands", specifier = ">=0.1.0" },
     { name = "streamlit", specifier = ">=1.46.1" },
 ]
 
@@ -1574,6 +1576,21 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/0a/69/662169fdb92fb96ec3eaee218cf540a629d629c86d7993d9651226a6789b/starlette-0.47.1.tar.gz", hash = "sha256:aef012dd2b6be325ffa16698f9dc533614fb1cebd593a906b90dc1025529a79b", size = 2583072 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/82/95/38ef0cd7fa11eaba6a99b3c4f5ac948d8bc6ff199aabd327a29cc000840c/starlette-0.47.1-py3-none-any.whl", hash = "sha256:5e11c9f5c7c3f24959edbf2dffdc01bba860228acf657129467d8a7468591527", size = 72747 },
+]
+
+[[package]]
+name = "strands"
+version = "0.1.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "numpy" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/e8/71/4cfb6937559a68e9bd0364999097c789121de35c212c6797b956d469b447/Strands-0.1.0.tar.gz", hash = "sha256:f43378968a607a273ea52e4001450bc0cd35f4464c7d2b0e633b182a6bc775a2", size = 34856 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/ca/5e/b8e58aacb5034f69a873ef055c42fbd52b91ab55d1f2a841a474fac72e37/Strands-0.1.0-cp311-cp311-macosx_10_9_x86_64.whl", hash = "sha256:9cf170da4cdcaa2b2967abe5d1bad1ce9ccfa394d19550e9732d71e2765286b7", size = 615091 },
+    { url = "https://files.pythonhosted.org/packages/3c/91/eda95dd3c62af19f13c63f8eb1d63f2994c0b7d05cca0802507641c0001a/Strands-0.1.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:497a172dc7a8aaeab99c2ec27130983e89b0a977c8f90e78333b5a1dcbce16bd", size = 635680 },
+    { url = "https://files.pythonhosted.org/packages/dd/c3/20877269084ea2a8a915e2ace886cf29b50bb21aeec06bf0bb3d96c15361/Strands-0.1.0-cp311-cp311-musllinux_1_1_x86_64.whl", hash = "sha256:48f2a6208def71656582e898c91fd7f2d21d6c8f30b5d7fdfeb4eacd4c575ed6", size = 1147629 },
+    { url = "https://files.pythonhosted.org/packages/7c/3b/ae4fb83db6c5207d4b30829d3a3c9a1275de349bc0479bcce540dfcbaea8/Strands-0.1.0-cp311-cp311-win_amd64.whl", hash = "sha256:086d6afdca8d2f2d1b15e2949dc44cdfc66f40912949ce078086e8e7320f0ef6", size = 596230 },
 ]
 
 [[package]]

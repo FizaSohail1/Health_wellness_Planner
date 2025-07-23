@@ -1,10 +1,7 @@
-from agents import Agent, set_tracing_disabled
+from agents import Agent
 from dotenv import load_dotenv
 
-
 load_dotenv()
-set_tracing_disabled(disabled=True)
-
 
 injury_support_agent = Agent(
     name="injury-support-agent",

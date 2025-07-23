@@ -11,8 +11,9 @@ from usefull_agents.injury_agent import injury_support_agent
 from usefull_agents.nutrition_expert_agent import nutrition_agent
 from usefull_agents.escalation_agnt import escalation_agent
 from my_context.context import UserSessionContext
+from guardrails import input_guardrail, InputGuardrailTripwireTriggered, output_guardrail
 
-st.set_page_config(page_title="Wellness Chat", layout="centered")
+st.set_page_config(page_title="Health Wellness Planner", layout="centered")
 st.title("🏥 Health & Wellness Planner Assistant")
 
 
@@ -27,7 +28,7 @@ main_agent = Agent[UserSessionContext](
     - Use `workout_recommender` for workouts.
     - Use `smart_checkin_scheduler` to plan check-ins.
     - Use `progress_tracker` to log progress.
-    If the user's query is unrelated or needs human support, use the given agents to give the proper response.
+    If the user's query is unrelated or needs human support, use the given agents to give the proper response.Only responde to health related queriese if user asks something unrelated eject to respond
     """,
     model="gpt-4.1-mini",
     tools=[
@@ -42,6 +43,8 @@ main_agent = Agent[UserSessionContext](
         injury_support_agent,
         nutrition_agent,
     ],
+    input_guardrails=[input_guardrail],
+    output_guardrails=[output_guardrail],
 )
 
 
@@ -72,6 +75,11 @@ async def run_agent_chat(message: str):
                     streamed_response += delta
                     output_box.markdown(streamed_response)
             st.session_state.chat_history.append(("assistant", streamed_response))
+
+        except InputGuardrailTripwireTriggered as e:
+          st.toast("Please enter a message between 5 and 300 characters.")
+          output_box.error(f"⚠️ Input rejected by guardrail: {(e)}")
+          st.session_state.chat_history.append(("assistant", str(e)))    
 
         except Exception as e:
             error = f"❌ Error: {str(e)}"

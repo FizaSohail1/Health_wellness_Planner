@@ -12,9 +12,6 @@ async def smart_checkin_scheduler() -> SmartCheckinOut:
     Schedules a check-in 7 days from today.
     No input needed. Just returns the next check-in date.
     """
-
-    print("📅 smart_checkin_scheduler tool called")  # Debug print
-
     next_date = datetime.now() + timedelta(days=7)
     formatted_date = next_date.strftime("%A, %B %d, %Y")
 

@@ -1,16 +1,18 @@
 from typing_extensions import TypedDict
 from agents import function_tool, RunContextWrapper
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from my_context.context import UserSessionContext
 import re
 
 class GoalAnalyzerOut(TypedDict):
     parsed_goal: dict
 
+from pydantic import BaseModel, Field
+
 class StructuredGoal(BaseModel):
-    type: str
-    target: str
-    duration: str
+    type: str = Field(description="Set the type of health goal, e.g., 'weight_loss', 'muscle_gain', or 'endurance' if there is nothing related to goal set none in the type")
+    target: str = Field(description="Set the specific target, e.g., 'lose 5kg', 'gain 3kg'")
+    duration: str = Field(description="Set the time duration which is given by user to achieve the goal, e.g., '2 weaks', '2 months'")
 
 @function_tool
 async def goal_analyzer(

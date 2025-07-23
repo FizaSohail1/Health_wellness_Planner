@@ -90,6 +90,7 @@ st.markdown("---")
 st.subheader("⚡ Quick Prompts")
 
 quick_prompts = [
+    "I want to lose 5 kg in 2 weaks",
     "I want to build muscle. I'm a beginner. Can you make me a 7-day workout plan?",
     "Can you make a vegetarian meal plan for the next 7 days?",
     "Can you schedule my check-in for next week?",

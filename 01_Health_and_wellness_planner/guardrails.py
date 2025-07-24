@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from agents import (
     Agent, 
     set_tracing_disabled,
@@ -12,14 +12,13 @@ from agents import (
 )
 from openai.types.responses import ResponseTextDeltaEvent
 from dotenv import load_dotenv
-from main import main_agent
+from usefull_agents.guardrail_agent import guardrail_agent
 
 load_dotenv()
-set_tracing_disabled(disabled=True)
 
 class MessageOutput(BaseModel): 
-    response: str    
-
+    response: str   
+    
 @input_guardrail
 async def input_guardrail(ctx: RunContextWrapper[None], agent: Agent, input: str):
     input_text = input if isinstance(input, str) else input[0].get("content", "")
@@ -38,10 +37,15 @@ async def input_guardrail(ctx: RunContextWrapper[None], agent: Agent, input: str
             tripwire_triggered=True
         )
 
+    result = await Runner.run(guardrail_agent, input, context=ctx)
+
+    is_triggered = bool(result.final_output.is_unrelated_query)
+
     return GuardrailFunctionOutput(
-        output_info=None,
-        tripwire_triggered=False
+        output_info=result.final_output,
+        tripwire_triggered=is_triggered
     )
+
 
 @output_guardrail
 async def output_guardrail(ctx:RunContextWrapper, agent:Agent, text:MessageOutput) -> GuardrailFunctionOutput:
